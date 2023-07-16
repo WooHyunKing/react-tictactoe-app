@@ -4,12 +4,14 @@ import "./Board.css";
 
 const Board = () => {
   const [squares, setSquares] = useState(Array(9).fill(null));
-  const status = `Next player : X`;
+  const [turnX, setTurnX] = useState(true);
+  const status = `Next player : ${turnX ? "X" : "O"}`;
 
   const handleClick = (i) => {
     const newSquares = squares.slice();
-    newSquares[i] = "X";
+    newSquares[i] = turnX ? "X" : "O";
     setSquares(newSquares);
+    setTurnX((prev) => !prev);
   };
 
   const renderSquare = (i) => {
