@@ -10,7 +10,9 @@ function App() {
   ]);
   const [turnX, setTurnX] = useState(true);
   const [gameOver, setGameOver] = useState(false);
-  const status = `Next player : ${turnX ? "X" : "O"}`;
+  const status = gameOver
+    ? `Winner : ${turnX ? "O" : "X"}`
+    : `Next player : ${turnX ? "X" : "O"}`;
 
   const current = history[history.length - 1];
 
@@ -19,6 +21,7 @@ function App() {
       return;
     }
     const newSquares = current.squares.slice();
+    newSquares[i] = turnX ? "X" : "O";
 
     setHistory([...history, { squares: newSquares }]);
     setTurnX((prev) => !prev);
@@ -59,8 +62,23 @@ function App() {
         <Board squares={current.squares} onClick={handleClick} />
       </div>
       <div className="game-info">
-        <div></div>
-        <ol></ol>
+        <div>{status}</div>
+        <ol>
+          {history.map((step, index) => (
+            <li key={index}>
+              <button
+                onClick={() => {
+                  setHistory((prev) => prev.slice(0, index + 1));
+                  if (gameOver && index !== history.length - 1) {
+                    setGameOver(false);
+                  }
+                }}
+              >
+                {index === 0 ? "Go to game start" : `Go to move #${index}`}
+              </button>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );
