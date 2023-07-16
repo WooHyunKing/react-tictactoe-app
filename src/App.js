@@ -62,11 +62,12 @@ function App() {
         <Board squares={current.squares} onClick={handleClick} />
       </div>
       <div className="game-info">
-        <div>{status}</div>
+        <div className="game-status">{status}</div>
         <ol>
           {history.map((step, index) => (
-            <li key={index}>
+            <li style={{ listStyle: "none" }} key={index}>
               <button
+                className="move-button"
                 onClick={() => {
                   setHistory((prev) => prev.slice(0, index + 1));
                   if (gameOver && index !== history.length - 1) {
