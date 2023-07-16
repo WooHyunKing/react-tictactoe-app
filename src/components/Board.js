@@ -2,61 +2,13 @@ import React, { Component, useState } from "react";
 import Square from "./Square";
 import "./Board.css";
 
-const Board = () => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [turnX, setTurnX] = useState(true);
-  const [gameOver, setGameOver] = useState(false);
-  const status = `Next player : ${turnX ? "X" : "O"}`;
-
-  const handleClick = (i) => {
-    if (gameOver || squares[i]) {
-      return;
-    }
-    const newSquares = squares.slice();
-    newSquares[i] = turnX ? "X" : "O";
-    setSquares(newSquares);
-    setTurnX((prev) => !prev);
-    console.log(newSquares);
-    if (checkGameOver(newSquares)) {
-      setGameOver(true);
-    }
-  };
-
-  const checkGameOver = (squares) => {
-    const gameOverList = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < gameOverList.length; i++) {
-      const [a, b, c] = gameOverList[i];
-      console.log(squares[a], squares[b], squares[c]);
-      if (
-        squares[a] &&
-        squares[a] === squares[b] &&
-        squares[b] === squares[c] &&
-        squares[a] === squares[c]
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-
+const Board = ({ squares, onClick }) => {
   const renderSquare = (i) => {
-    return <Square value={squares[i]} onClick={() => handleClick(i)} />;
+    return <Square value={squares[i]} onClick={() => onClick(i)} />;
   };
 
   return (
     <div>
-      <div className="status">
-        {gameOver ? `Winner : ${turnX ? "O" : "X"}` : status}
-      </div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
